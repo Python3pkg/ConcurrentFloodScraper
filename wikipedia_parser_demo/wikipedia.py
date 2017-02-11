@@ -6,7 +6,7 @@ ROOT = 'https://en.wikipedia.org/wiki/Main_Page'
 
 
 @Route(r'^https?://en.wikipedia.org/wiki/([^/\s\'"]*/?)*$')
-class SomeClass(BaseParser):
+class WikipediaParser(BaseParser):
     url_filter_regex = r'^https?://en.wikipedia.org/wiki/([^/\s\'"]*/?)*$'
 
     def parse_page(self, text):
