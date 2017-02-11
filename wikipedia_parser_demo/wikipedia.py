@@ -11,11 +11,11 @@ class WikipediaParser(BaseParser):
 
     def parse_page(self, text):
         # TODO parse logic goes here
-        print('routing works')
+        print('You\'re at %s. HTML is in page. do your\'re stuff' % self.url)
 
 
 def run():
-    pool = BaseConcurrentParser(ROOT, 5, 20)
+    pool = BaseConcurrentParser(ROOT, 10, 50)
     pool.start()
     pool.join()
     print('Done!')
