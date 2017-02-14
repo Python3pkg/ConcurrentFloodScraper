@@ -1,11 +1,11 @@
 import threading
 
-from bin.base_parser import BaseParser
-from bin.router import RouteManager
+from concurrentfloodscraper.router import RouteManager
+from concurrentfloodscraper.scraper import Scraper
 
 
 class BaseWorker(threading.Thread):
-    parse_class = BaseParser
+    parse_class = Scraper
 
     def __init__(self, tid, context):
         super().__init__()
@@ -13,8 +13,6 @@ class BaseWorker(threading.Thread):
         self.context = context
 
     def run(self):
-        print('Hello from thread %s!' % self.tid)
-
         while True:
             # get new url
             new_url = self.context.pubsub.pop()
@@ -31,7 +29,5 @@ class BaseWorker(threading.Thread):
             self.context.pubsub.push_group(new_urls)
 
             # check exit condition
-            if self.context.pubsub.popped >= self.context.page_limit:
+            if self.context.is_done():
                 return
-
-        print('%s: Done!' % self.tid)

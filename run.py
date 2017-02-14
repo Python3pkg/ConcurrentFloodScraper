@@ -1,3 +1,3 @@
-import wikipedia_parser_demo.wikipedia as wiki
+import concurrentfloodscraper.wikipedia_demo as wiki
 
 wiki.run()

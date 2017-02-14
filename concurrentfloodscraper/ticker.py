@@ -1,10 +1,9 @@
-from threading import Thread
 import time
+from threading import Thread
 
 
 # class to regularly output global statistic for monitoring
 class Ticker(Thread):
-
     def __init__(self, context, tick_interval=1):
         super().__init__()
         self.context = context

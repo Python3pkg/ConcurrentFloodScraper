@@ -1,8 +1,7 @@
-# logic required for building URLs and such
 import re
-import threading
 
 
+# logic required for building URLs and such
 class UrlBuilder:
     qualified_regex = re.compile(r'^https?://[^\s]+$')
     domain_relative_regex = re.compile(r'^/[^\s]+$')

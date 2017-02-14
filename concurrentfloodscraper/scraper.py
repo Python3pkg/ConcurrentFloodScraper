@@ -1,13 +1,11 @@
 import re
-import threading
 
 import requests
-import time
 
-from bin.url_builder import UrlBuilder
+from concurrentfloodscraper.url_builder import UrlBuilder
 
 
-class BaseParser:
+class Scraper:
     number_retries = 5
     timeout = 5
     href_url_regex = re.compile(r'href="(?P<url>[^"]*)"')
@@ -30,7 +28,7 @@ class BaseParser:
             return ['']  # no new urls
 
         # subclass does their stuff
-        self.parse_page(text)
+        self.scrape_page(text)
 
         # get new urls, and filter. return those to worker
         all_urls = self.parse_all_urls(text)
@@ -53,12 +51,11 @@ class BaseParser:
         return page.text
 
     # get urls from text
-    # TODO generalize
     def parse_all_urls(self, text):
         matches = self.href_url_regex.findall(text)
         new_urls = [UrlBuilder.build_qualified(self.url, match) for match in matches]
         return new_urls
 
     # parse page for content
-    def parse_page(self, text):
-        pass
+    def scrape_page(self, text):
+        raise NotImplemented('Child class of %s must implement scrape_page(self,text)' % self.__class__)

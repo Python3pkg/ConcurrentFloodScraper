@@ -1,16 +1,22 @@
-from bin.base_worker import BaseWorker
-from bin.pubsub import PubSub, SetQueue
+from concurrentfloodscraper.base_worker import BaseWorker
+from concurrentfloodscraper.pubsub import PubSub, SetQueue
 
-from bin.ticker import Ticker
+from concurrentfloodscraper.ticker import Ticker
 
 
 # global context for threads
 class Context:
     # pubsub is dependency injected
     def __init__(self, pubsub):
-        self.pages_parsed = 0
         self.page_limit = 0  # get overriden, declared here for verbosity
         self.pubsub = pubsub
+
+    # finish condition. page_limit = None implies go until no urls left
+    def is_done(self):
+        if not self.page_limit:
+            return False
+
+        return self.pubsub.popped >= self.page_limit
 
 
 # baseline controller class, controls worker threads
@@ -30,7 +36,7 @@ class BaseController:
     def get_new_worker(self, tid):
         return self.worker_class(tid, self.context)
 
-    def start(self, root_url, num_pages):
+    def start(self, root_url, num_pages=None):
         self.context.page_limit = num_pages
         self.context.pubsub.push(root_url)
         for worker in self.workers:

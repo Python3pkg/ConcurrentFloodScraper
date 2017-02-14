@@ -1,10 +1,10 @@
-from bin.base_controller import BaseController
-from bin.base_parser import BaseParser
+from concurrentfloodscraper.base_controller import BaseController
+from concurrentfloodscraper.scraper import Scraper
 
 
 # easy way to extend functionality
-class BaseConcurrentParser:
-    parser_class = BaseParser
+class ConcurrentFloodScraper:
+    parser_class = Scraper
 
     def __init__(self, root, num_workers, num_pages):
         self.controller = BaseController(num_workers)
