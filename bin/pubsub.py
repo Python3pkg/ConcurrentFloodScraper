@@ -1,4 +1,3 @@
-import re
 import threading
 
 
@@ -25,6 +24,7 @@ class SetQueue:
 
 # provides a thread-safe way to push/pop
 class PubSub:
+    tid = lambda self: threading.current_thread()
 
     # queue is dependency injected
     def __init__(self, queue):
@@ -45,15 +45,16 @@ class PubSub:
     def push_group(self, items):
         self.cv.acquire()
         self.queue.push_group(items)
-        self.cv.notify_all()  # notify all. Docs say notify(len(items)) is not garuenteed in future impls, so we dont rely on it
         self.pushed += len(items)
+        self.cv.notify_all()  # notify all. Docs say notify(len(items)) is not garuenteed in future impls, so we dont rely on it
         self.cv.release()
 
     # thread-safe pop. returns a single item if amount is 1, otherwiser returns a list
     # this is a blocking call
     def pop(self, amount=1):
         self.cv.acquire()
-        while len(self.queue) < amount:
+
+        while (len(self.queue) < amount):
             self.cv.wait()
 
         if amount == 1:
@@ -68,5 +69,5 @@ class PubSub:
         return result
 
     # returns a string of some stats
-    def info(self):
+    def print_info(self):
         print('PubSub: pushed=%s, popped=%s, current_size=%s' % (self.pushed, self.popped, len(self.queue)))

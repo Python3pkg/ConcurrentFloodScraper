@@ -1,7 +1,4 @@
-import re
 import threading
-
-import requests
 
 from bin.base_parser import BaseParser
 from bin.router import RouteManager

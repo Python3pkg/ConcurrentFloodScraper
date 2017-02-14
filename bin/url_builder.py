@@ -1,11 +1,12 @@
 # logic required for building URLs and such
 import re
+import threading
 
 
 class UrlBuilder:
-    qualified_regex = re.compile(r'^https?://([^/\s\'"]*/?)*$')
-    domain_relative_regex = re.compile(r'^/([^/\s\'"]*/?)*$')
-    domain_regex = re.compile(r'^(?P<domain>https?://[^/\s\'"]*)/?')
+    qualified_regex = re.compile(r'^https?://[^\s]+$')
+    domain_relative_regex = re.compile(r'^/[^\s]+$')
+    domain_regex = re.compile(r'^(?P<domain>https?://[^/\s]+)/?')
 
     # given current url and url shard, build fully qualified url
     @staticmethod

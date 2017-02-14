@@ -10,12 +10,13 @@ class WikipediaParser(BaseParser):
     url_filter_regex = r'^https?://en.wikipedia.org/wiki/([^/\s\'"]*/?)*$'
 
     def parse_page(self, text):
+        pass
         # TODO parse logic goes here
-        print('You\'re at %s. HTML is in page. do your\'re stuff' % self.url)
+        #print('You\'re at %s. HTML is in page. do your\'re stuff' % self.url)
 
 
 def run():
-    pool = BaseConcurrentParser(ROOT, 10, 50)
+    pool = BaseConcurrentParser(ROOT, 10, 5000)
     pool.start()
     pool.join()
     print('Done!')

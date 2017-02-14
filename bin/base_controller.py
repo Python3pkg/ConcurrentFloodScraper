@@ -1,6 +1,8 @@
 from bin.base_worker import BaseWorker
 from bin.pubsub import PubSub, SetQueue
 
+from bin.ticker import Ticker
+
 
 # global context for threads
 class Context:
@@ -22,6 +24,7 @@ class BaseController:
         pubsub = self.pubsub_class(queue)
         self.context = Context(pubsub)
         self.workers = [self.get_new_worker(i) for i in range(num_workers)]
+        self.ticker = Ticker(self.context)
 
     # returns a new worker. This allows Controller child classes an easy way to take over worker construction
     def get_new_worker(self, tid):
@@ -32,12 +35,14 @@ class BaseController:
         self.context.pubsub.push(root_url)
         for worker in self.workers:
             worker.start()
+        self.ticker.start()
 
     def join(self):
+        self.ticker.join()
         for worker in self.workers:
             worker.join()
 
-        print(self.context.pubsub.info())
+        self.context.pubsub.print_info()
 
 
 if __name__ == '__main__':
