@@ -18,13 +18,13 @@ class Scraper:
 
     # main function. returns new_urls. any data is the responsibility of subclasses
     def parse(self):
-        print('Parsing %s' % self.url)
+        print(('Parsing %s' % self.url))
 
         # get text
         try:
             text = self.load_page()
         except requests.exceptions.RequestException as e:
-            print('Error loading "%s". Error is %s' % (self.url, e))
+            print(('Error loading "%s". Error is %s' % (self.url, e)))
             return ['']  # no new urls
 
         # subclass does their stuff
@@ -32,7 +32,7 @@ class Scraper:
 
         # get new urls, and filter. return those to worker
         all_urls = self.parse_all_urls(text)
-        new_urls = list(filter(lambda x: self.url_filter_regex.match(x), all_urls))
+        new_urls = list([x for x in all_urls if self.url_filter_regex.match(x)])
         return new_urls
 
     # get html code from url

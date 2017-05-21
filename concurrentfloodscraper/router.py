@@ -15,7 +15,7 @@ class RouteManager:
     # return the scraper class responsible for a given url
     @staticmethod
     def route(url):
-        for regex, cls in RouteManager.paths.items():
+        for regex, cls in list(RouteManager.paths.items()):
             if regex.match(url):
                 return cls
 

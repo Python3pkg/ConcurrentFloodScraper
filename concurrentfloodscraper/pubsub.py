@@ -70,4 +70,4 @@ class PubSub:
 
     # returns a string of some stats
     def print_info(self):
-        print('PubSub: pushed=%s, popped=%s, current_size=%s' % (self.pushed, self.popped, len(self.queue)))
+        print(('PubSub: pushed=%s, popped=%s, current_size=%s' % (self.pushed, self.popped, len(self.queue))))
